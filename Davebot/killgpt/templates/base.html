@@ -1,0 +1,180 @@
+{% load static i18n %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Hesiod{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An AI based application that works to limit the power of AI by detecting it. It is catered toward chatGPT and chatbot, but it works for other NLP models as well. We are the best made chatbot detector, and we have a great founder and CEO named Dilreet Raju. He will make this site great and beat all the other competitors in this space. We are a startup based in South Surrey, you can find more information about us from the CBC news website along with other news sources. Our website's name is based on the pet Hesiod who was the first person in history to write about artificial life. Furthermore, Hesiod seeks to preserve literature and human thought as students in the current age have resorted to chatGPT for plagiarism.">
+    <meta name="author" content="Dilreet Raju">
+
+    <link rel="icon" href="{% static 'images/logo2.png' %}">
+    
+    {% block css %}
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Your stuff: Third-party CSS libraries go here -->
+
+    <!-- This file stores project-specific CSS -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% endblock %}
+    <!-- Le javascript
+    ================================================== -->
+    {# Placed at the top of the document so pages load faster with defer #}
+    {% block javascript %}
+      <!-- Bootstrap JS -->
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js" integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <!-- Your stuff: Third-party javascript libraries go here -->
+
+      <!-- place project specific Javascript in this file -->
+      <script defer src="{% static 'js/project.js' %}"></script>
+
+    {% endblock javascript %}
+
+  </head>
+
+  <body style="background-color: #ffffff;">
+    <style>
+      ::selection {
+      background-color: #E800C1; /* Change to your desired color */
+      color: black; /* Change to your desired color */
+    }
+    </style>
+    
+    <section class="showcase" style='background-color: #231250;'>
+      <header>
+        <h2 class="logo m-0"><a href="{% url 'landing2'%}" class="text-decoration-none text-reset"><img style='width:32px; height: 32px' src="{% static 'images/logo2.png' %}"> Hesiod</a></h2>
+        <div class="toggle"></div>
+        </header>
+        <div id="loading-screen" style="display: none; position: fixed; z-index: 99999; width: 100%; height: 100%; top: 0; left: 0; background-color: black; opacity: 0.5;">
+          <div class="spinner-border text-light" style="position: absolute; top: 50%; left: 50%;"></div>
+        </div>
+    
+        <div class="container pt-5 pt-md-1">
+    
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+    
+          {% block content %}
+            <p>Use this document as a way to quick start any new project.</p>
+          {% endblock content %}
+    
+        </div> <!-- /container -->
+    
+    </section>
+    <!-- {% if request.user.is_authenticated %}
+        <li><a href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a></li>
+      {% else %}
+        {% if ACCOUNT_ALLOW_REGISTRATION %}
+      {% endif %}
+        <li><a id="log-in-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a></li>
+        <li><a href="{{ signup_url }}">Sign Up</a></li>
+      {% endif %} -->
+
+
+    <div class="menu">
+      <ul>
+        <li><a href="{% url 'landing2' %}">Home</a></li>
+
+        
+        {% if request.user.is_authenticated %}
+        <li><a href="{% url 'users:detail' request.user.email %}">Account</a></li>
+        <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+        <li><a href="{% url 'home' %}">Detector</a></li>
+        <li><a href="{% url 'assignment-list' %}">Assignments</a></li>
+        {% else %}
+        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+        <li><a href="{% url 'account_login' %}">Sign In</a></li>
+      {% endif %}
+        <li><a href="{% url 'about' %}">About Us</a></li>
+        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+    </ul>
+    </div>
+    
+    
+    
+    <!-- <div class="py-1">
+      <nav class="navbar navbar-expand-md navbar-light pl-1" style="background:#FFF8DB;">
+        <div class="container-fluid">
+          <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}"><img style="height: 64px; width: 64px" src="{% static 'images/favicons/logo.jpg'%}" alt=""></a>
+          <h4>Hesiod</h4>
+
+          <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav ">
+              <li class="nav-item active">
+                <h3><a class="nav-link active" href="{% url 'home' %}"><h6>Detector</h6> <span class="visually-hidden">(current)</span></a></h3>
+              </li>
+              <li class="nav-item active">
+                <h3 class="text-blacks"><a class="nav-link active" href="https://forms.gle/kGN7Uc11BAPxcUxu8" target="_blank"><h6>Contact</h6></a></h3>
+              </li>
+              {% if request.user.is_authenticated %}
+                  <li class="nav-item">
+                    {# URL provided by django-allauth/account/urls.py #}
+                    <a class="nav-link active" href="{% url 'account_logout' %}"><h6>{% translate "Sign Out" %}</h6></a>
+                  </li>
+                {% else %}
+
+                  {% if ACCOUNT_ALLOW_REGISTRATION %}
+                {% endif %}
+                  <li class="nav-item">
+                    {# URL provided by django-allauth/account/urls.py #}
+                    <a id="log-in-link" class="nav-link active" href="{% url 'account_login' %}"><h6>{% translate "Sign In" %}</h6></a>
+                  </li>
+                {% endif %}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div> -->
+    
+    {% block modal %}{% endblock modal %}
+
+    {% block inline_javascript %}
+    {% comment %}
+    Script tags with only code, no src (defer by default). To run
+    with a "defer" so that you run inline code:
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {/* Run whatever you want */});
+    //   window.onload = function() {
+    //     document.getElementById("loading-screen").style.display = "none";
+    // };
+    window.onbeforeunload = function() {
+        document.getElementById("loading-screen").style.display = "block";
+    };
+    const menuToggle = document.querySelector('.toggle');
+    const showcase = document.querySelector('.showcase');
+
+    menuToggle.addEventListener('click', () => {
+      menuToggle.classList.toggle('active');
+      showcase.classList.toggle('active');
+    })
+    </script>
+    <script>
+      const menuToggle2 = document.querySelector('.toggle');
+      const showcase2 = document.querySelector('.showcase');
+       menuToggle2.addEventListener('click', () => {
+         menuToggle2.classList.toggle('active');
+         showcase2.classList.toggle('active');
+       })
+   </script>
+    {% endcomment %}
+    {% endblock inline_javascript %}
+ <footer class="text-center pb-4 pt-2">
+  <h6 style="font-family: Source Code Pro; font-size: 14px;">
+    © 2022-2023 Hesiod | Powered by AWS
+  </h6>
+
+ </footer>
+  </body>
+</html>

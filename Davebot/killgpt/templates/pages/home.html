@@ -1,0 +1,376 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load bootstrap_icons %}
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  .form-container {
+    width: 15%;
+    margin: 0 auto;
+  }
+
+  :root {
+    --background-color-secondary: #231250;
+  }
+
+  .no-pad {
+    padding: 0px;
+  }
+
+  .pie {
+    margin: 8px;
+    height: 180px;
+    width: 180px;
+    border-radius: 50%;
+  }
+
+  .one {
+    background: conic-gradient(dodgerblue 0% 85%,
+        orangered 25% 85%,
+        limegreen 85% 93%,
+        #f9f000 93%);
+  }
+
+  .two {
+    background: conic-gradient(cornflowerblue 0% 35%,
+        darkorange 35% 57%,
+        greenyellow 57% 85%,
+        #FFFFFF 85%);
+  }
+
+  .three {
+
+    background: conic-gradient(#03D1CA 0% var(--percentage),
+        #231250 0%);
+  }
+
+  .pie.hollow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pie.hollow::after {
+    content: '';
+    position: absolute;
+    height: 180px;
+    width: 180px;
+    border-radius: 25%;
+    background-color: #FFFFFF;
+  }
+
+  .pie.two.hollow::after {
+    content: '';
+    position: absolute;
+    height: 48px;
+    width: 48px;
+    border-radius: 25%;
+    background-color: var(--background-color-secondary);
+  }
+
+  .pie.three.hollow::after {
+    content: '';
+    position: absolute;
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    background-color: var(--background-color-secondary);
+  }
+
+  :root {
+    --background-color: #231250;
+    --text-color: white;
+
+  }
+
+  .pie.hollow span {
+    font-size: 28pt;
+    z-index: 2;
+    color: white;
+    font-weight: bold;
+    font-family: "JetBrains Mono", sans-serif;
+  }
+
+  .card {
+    background-color: var(--background-color);
+    border: none;
+  }
+
+  .progress {
+    margin-bottom: 10px;
+    /* Adjust the margin to create spacing between graphs */
+  }
+
+  table {
+    border: 1px solid white;
+    width: 100%;
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  th,
+  td {
+    border: 1px solid white;
+    text-align: left;
+    padding: 10px;
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit&family=Source+Code+Pro&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Your+Font+Name&display=swap" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link href="{% static 'css/style.css'%}" rel="stylesheet">
+<main role="main py-4" style="background: var(--background-color);">
+
+  <div class="container pt-5 pb-2 font-weight-bold" style="font-family: Poppins, sans-serif;">
+    <div class=" pt-2 container col-md-10 rounded ">
+      <h2 class="display-4 text-center"
+        style='font-size: 5em;
+   font-weight: 800;
+   color: #fff;
+   line-height: 1em;
+   text-transform: uppercase;font-family: Poppins, sans-serif; text-transform: uppercase; font-size: 36px; color: var(--text-color);'>Let's End
+        Wrongful AI Use With Hesiod.</h2>
+
+
+
+
+      <hr class="bg-white">
+
+      
+
+      
+
+      {% if feedback_dict_sentences %}
+
+      <div class="d-flex row justify-content-center">
+        <div class="card h-100" style="background-color: white; color: black; line-height: 2;">
+          <div class="card-body m-5">
+            <!-- <p class="card-text">{{input_text}}</p> -->
+            <div class="mb-3 card-text">
+              <h2 class="display-4 pb-5 text-center" style='font-size: 5em;
+   font-weight: 800;
+   color: purple;
+   line-height: 1em;
+   text-transform: uppercase;font-family: Poppins, sans-serif; text-transform: uppercase; font-size: 36px;'>Click on
+                text to add or edit feedback.</h2>
+              <form method="post" id="formset-form">
+                {% csrf_token %}
+                {{ formset.management_form }}
+                <div class="mb-3">
+                  {% for form in formset %}
+                  <div class="feedback-container">
+                    <div class="row">
+                      <div class="col">
+                        <input type="hidden" name="{{ form.element_1.html_name }}" value="{{ form.element_1.value }}">
+                        {% if form.element_2.value %}
+                        <p class="text-purple" onclick="toggleFeedback('{{ forloop.counter }}')">
+                          {{ form.element_1.value }}
+                        </p>
+                        {% else %}
+                        <p onclick="toggleFeedback('{{ forloop.counter }}')">{{ form.element_1.value }}</p>
+                        {% endif %}
+                        <!-- Display feedback underneath element_1 -->
+                        <div id="feedback_{{ forloop.counter }}" class="feedback border border-dark shadow-lg mb-3"
+                          style="display: none;">
+                          <div class="m-3">
+                            {% if form.element_2.value %}
+                            <!-- AI Feedback -->
+                            <div class="row">
+                              <div class="col-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                  class="bi bi-robot" viewBox="0 0 16 16">
+                                  <path
+                                    d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a25 25 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135" />
+                                  <path
+                                    d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5" />
+                                </svg>
+                              </div>
+                              <div class="col-auto">
+                                <strong>AI Feedback</strong>
+                              </div>
+                              <div class="col-auto">
+
+                              </div>
+                            </div>
+                            <div class="row m-2">
+                              <textarea type="text" name="{{ form.element_2.html_name }}" value="" rows="4"
+                                class="form-control">{{ form.element_2.value }}</textarea>
+                            </div>
+                            {% else %}
+                            <!-- Human Feedback -->
+                            <div class="row">
+                              <div class="col-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                  class="bi bi-person" viewBox="0 0 16 16">
+                                  <path
+                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                                </svg>
+                              </div>
+                              <div class="col-auto">
+                                <strong>Your Feedback</strong>
+                              </div>
+
+                            </div>
+                            <div class="row m-2">
+                              <textarea type="text" name="{{ form.element_2.html_name }}" value="" rows="4"
+                                class="form-control">{{ form.element_2.value }}</textarea>
+                            </div>
+
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary">Download Feedback</button>
+              </form>
+
+              <style>
+                /* Select the text to be underlined and add an underline */
+                .text-purple {
+                  text-decoration: underline;
+                  text-decoration-thickness: 3px;
+                  text-underline-offset: 0.3em;
+                  text-decoration-color: purple;
+                  cursor: pointer;
+                  /* Change cursor to pointer on hover */
+                }
+              </style>
+
+              <script>
+                function toggleFeedback(counter) {
+                  $('#feedback_' + counter).toggle();
+                }
+              </script>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+      {% endif %}
+
+
+
+
+
+
+
+      <form action="" method="POST" class='text-white input-lg py-5' enctype="multipart/form-data"
+        style=" background: var(--background-color);">
+
+        {% csrf_token %}
+
+        <div class="form-content">
+          {{ form|crispy }}
+        </div>
+        <p class="mt-0 text-white" style='font-family: Poppins, sans-serif; font-size: 10px;'>We support pdf, word, and
+          txt file types. However, ensure to remove all images, idenitification, and cover pages to support our document
+          requirements. </p>
+        <p class=" text-left text-white" style=" font-family: Poppins, sans-serif;font-size: 12px;">By submitting
+          content,
+          you agree to our <a href="{% url 'terms' %}" target="_blank" class="">Terms of Use</a> and <a
+            href="{% url 'pp' %}" class="" target="_blank">Privacy Policy</a>. Be sure you have appropriate rights to
+          the
+          content before using the AI Text Classifier. Also, ensure that all personal information should be purged from
+          any files/text being submitted for analysis.</p>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            const feedbackToggle = document.querySelector('#id_feedback_input');
+            const feedbackLabel = document.querySelector('[for="id_feedback_choice"]');
+            const feedbackChoice = document.querySelector('.feedback-choice');
+
+            const toggleFeedback = () => {
+              const arbitraryValue = 'What Assignment Is This Submission For?'; // Change this to your desired label text
+
+              if (feedbackToggle.checked) {
+                feedbackLabel.textContent = arbitraryValue;
+                feedbackChoice.style.display = 'block';
+              } else {
+                feedbackLabel.textContent = ''; // Default label text
+                feedbackChoice.style.display = 'none';
+              }
+            };
+
+            toggleFeedback();
+
+            feedbackToggle.addEventListener('change', toggleFeedback);
+          });
+        </script>
+        <button id="submit-button" class="btn block px-5 text-black" type="submit" style="display: inline-block;
+    font-size: 1em;
+    background: aqua;
+    padding: 10px 30px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 10px;
+    color: #111;
+    letter-spacing: 2px;
+    transition: 0.2s;">{% bs_icon 'search' color='black' size='1em' %} Analyze</button>
+        <button id="loading-spinner" class="btn px-5 text-black" type="button"
+          style="background: aqua; font-family: Poppins, sans-serif; font-size: 14px; border: w#4E527F;display: none;">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Analyzing...
+        </button>
+        <script>
+          $(document).ready(function () {
+            $('#submit-button').click(function () {
+              $('#submit-button').hide();
+              $('#loading-spinner').show();
+            });
+          });
+        </script>
+        <script>
+          // Get references to the checkbox and additional field
+          const checkbox = document.getElementById('id_checkbox_field');
+          const additionalField = document.getElementById('id_additional_field');
+
+          // Hide the additional field initially
+          additionalField.style.display = 'none';
+
+          // Add an event listener to the checkbox
+          checkbox.addEventListener('change', function () {
+            if (checkbox.checked) {
+              // If the checkbox is checked, show the additional field
+              additionalField.style.display = 'block';
+            } else {
+              // If the checkbox is unchecked, hide the additional field
+              additionalField.style.display = 'none';
+            }
+          });
+        </script>
+
+      </form>
+
+
+
+
+
+
+      <hr class="bg-white">
+
+
+    </div>
+
+</main>
+
+{%endblock content%}

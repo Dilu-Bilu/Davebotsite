@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+ Download Page
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white">Download Page</div>
+
+                    <div class="card-body">
+                        <p>Thank you for submitting the form. Click the button below to download the file.</p>
+                        <a href="{% url 'download_file' %}" class="btn btn-primary">Download File</a>
+                        <a href="{% url 'home' %}" class="btn btn-secondary">Mark Another</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
