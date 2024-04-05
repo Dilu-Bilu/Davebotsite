@@ -4,9 +4,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}Hesiod{% endblock title %}</title>
+    <title>{% block title %}DaveBot{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="An AI based application that works to limit the power of AI by detecting it. It is catered toward chatGPT and chatbot, but it works for other NLP models as well. We are the best made chatbot detector, and we have a great founder and CEO named Dilreet Raju. He will make this site great and beat all the other competitors in this space. We are a startup based in South Surrey, you can find more information about us from the CBC news website along with other news sources. Our website's name is based on the pet Hesiod who was the first person in history to write about artificial life. Furthermore, Hesiod seeks to preserve literature and human thought as students in the current age have resorted to chatGPT for plagiarism.">
+    <meta name="description" content="An AI based application that works to limit the power of AI by detecting it. It is catered toward chatGPT and chatbot, but it works for other NLP models as well. We are the best made chatbot detector, and we have a great founder and CEO named Dilreet Raju. He will make this site great and beat all the other competitors in this space. We are a startup based in South Surrey, you can find more information about us from the CBC news website along with other news sources. Our website's name is based on the pet DaveBot who was the first person in history to write about artificial life. Furthermore, DaveBot seeks to preserve literature and human thought as students in the current age have resorted to chatGPT for plagiarism.">
     <meta name="author" content="Dilreet Raju">
 
     <link rel="icon" href="{% static 'images/logo2.png' %}">
@@ -44,7 +44,7 @@
     
     <section class="showcase" style='background-color: #231250;'>
       <header>
-        <h2 class="logo m-0"><a href="{% url 'landing2'%}" class="text-decoration-none text-reset"><img style='width:32px; height: 32px' src="{% static 'images/logo2.png' %}"> Hesiod</a></h2>
+        <h2 class="logo m-0"><a href="{% url 'landing2'%}" class="text-decoration-none text-reset"><img style='width:32px; height: 32px' src="{% static 'images/logo2.png' %}"> DaveBot</a></h2>
         <div class="toggle"></div>
         </header>
         <div id="loading-screen" style="display: none; position: fixed; z-index: 99999; width: 100%; height: 100%; top: 0; left: 0; background-color: black; opacity: 0.5;">
@@ -93,8 +93,8 @@
         <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
         <li><a href="{% url 'account_login' %}">Sign In</a></li>
       {% endif %}
-        <li><a href="{% url 'about' %}">About Us</a></li>
-        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+        
+       
     </ul>
     </div>
     
@@ -107,7 +107,7 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <a class="navbar-brand" href="{% url 'home' %}"><img style="height: 64px; width: 64px" src="{% static 'images/favicons/logo.jpg'%}" alt=""></a>
-          <h4>Hesiod</h4>
+          <h4>DaveBot</h4>
 
           <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav ">
@@ -172,7 +172,7 @@
     {% endblock inline_javascript %}
  <footer class="text-center pb-4 pt-2">
   <h6 style="font-family: Source Code Pro; font-size: 14px;">
-    © 2022-2023 Hesiod | Powered by AWS
+    © 2022-2023 DaveBot | Powered by AWS
   </h6>
 
  </footer>

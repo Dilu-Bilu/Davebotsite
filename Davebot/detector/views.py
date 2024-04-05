@@ -86,7 +86,7 @@ def TextInputView(request):
             return response
         
         else:
-            form = TextInputForm(user, request.POST, request.FILES)
+            form = TextInputForm(request.POST, request.FILES)
             if form.is_valid():
                 initial = time.time()
                 text_input = form.cleaned_data['text_input']
@@ -115,12 +115,12 @@ def TextInputView(request):
                 for key, value in feedback_dict_sentences.items():
                     initial_data.append({'element_1': value[0], 'element_2': value[1]})  # Assuming each value is a tuple with two elements
                 formset = TupleFormSet(initial=initial_data)
-                context = {'form': form, 'percent': percent , 'output': score, 'score': score, 'decision': decision, 'input_text': input_text, 'formset': formset, 'feedback_dict_sentences': feedback_dict_sentences,}
+                context = {'form': form, 'input_text': input_text, 'formset': formset, 'feedback_dict_sentences': feedback_dict_sentences,}
                 
             else:
                 context = {'form': form}
     else:
-        form = TextInputForm(user)
+        form = TextInputForm()
         context = {'form': form}
     return render(request, 'pages/home.html', context)
 

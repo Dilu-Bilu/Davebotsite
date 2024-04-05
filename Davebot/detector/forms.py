@@ -36,25 +36,25 @@ class TextInputForm(forms.Form):
     rubric_input = forms.CharField(
         required=False,
         widget=forms.Textarea(attrs={
-            'rows': 10,
-            'cols': 35,
+            'rows': 5,
+            'cols': 25,
             'class': 'custom-field border-black',
-            'placeholder': 'Enter the text you want to test for AI/Chatbot text (minimum 20 words)',
+            'placeholder': 'Enter the rubric for your assignment.',
             'style': 'background-color: #201A31; color: white; font-family: Poppins, sans-serif; font-size: 14px; border-color: white;',
         }),
-        label='Text Input:',  # Set the label for the field
+        label='Rubric Input:',  # Set the label for the field
     )
     
     subject_input = forms.CharField(
         required=False,
         widget=forms.Textarea(attrs={
-            'rows': 10,
-            'cols': 35,
+            'rows': 1.5,
+            'cols': 10,
             'class': 'custom-field border-black',
-            'placeholder': 'Enter the text you want to test for AI/Chatbot text (minimum 20 words)',
+            'placeholder': 'Enter the subject this is for.',
             'style': 'background-color: #201A31; color: white; font-family: Poppins, sans-serif; font-size: 14px; border-color: white;',
         }),
-        label='Text Input:',  # Set the label for the field
+        label='Subject Input:',  # Set the label for the field
     )
 
     file_input = forms.FileField(
