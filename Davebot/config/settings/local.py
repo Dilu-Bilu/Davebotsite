@@ -60,7 +60,6 @@
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 # AWS_ACCESS_KEY_ID = env("DJANGO_AWS_ACCESS_KEY_ID", default='AKIAYHHSQMDH327XPB46')
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
-# AWS_SECRET_ACCESS_KEY = env("DJANGO_AWS_SECRET_ACCESS_KEY", default='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')
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
 # AWS_STORAGE_BUCKET_NAME = env("DJANGO_AWS_STORAGE_BUCKET_NAME", default='hesiodbucket')
 # # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html#settings
