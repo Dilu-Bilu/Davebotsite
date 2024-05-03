@@ -2,12 +2,12 @@ import dspy
 import re
 
 class DaveBot():
-    def get_feedback(self, essay, document):
+    def get_feedback(self, essay, document, subject):
         turbo = dspy.OpenAI(model='gpt-3.5-turbo-0125', max_tokens=1400)
         dspy.settings.configure(lm=turbo)
         essay = self.index_sentences(essay)
         class Marker(dspy.Signature):
-            """Provide concise feedback to improve sentences in an IB History 12 essay. Reference each sentence by index and maintain numerical order. Be strict to encourage improvement, respond to 61% of sentences inside the essay. Feedback should be max 80 tokens for each sentence, include a score based on the rubric. Format: [index], feedback. Score: [range].
+            f"""Provide concise feedback to improve sentences in an {subject} essay. Reference each sentence by index and maintain numerical order. Be strict to encourage improvement, respond to 61% of sentences inside the essay. Feedback should be max 80 tokens for each sentence, include a score based on the rubric. Format: [index], feedback. Score: [range].
             """
 
             essay = dspy.InputField(desc="An essay with indexed sentences. Reference these when giving feedback.")

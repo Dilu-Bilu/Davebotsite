@@ -133,16 +133,17 @@
    font-weight: 800;
    color: #fff;
    line-height: 1em;
-   text-transform: uppercase;font-family: Poppins, sans-serif; text-transform: uppercase; font-size: 36px; color: var(--text-color);'>Mark Papers Faster With DaveBot.</h2>
+   text-transform: uppercase;font-family: Poppins, sans-serif; text-transform: uppercase; font-size: 36px; color: var(--text-color);'>Mark Papers
+        Faster With DaveBot.</h2>
 
 
 
 
       <hr class="bg-white">
 
-      
 
-      
+
+
 
       {% if feedback_dict_sentences %}
 
@@ -163,6 +164,13 @@
                 <div class="mb-3">
                   {% for form in formset %}
                   <div class="feedback-container">
+                    {% if form.overall_feedback.value %}
+                    <b class="">Overall Feedback:</b>
+                    <div class="feedback-container">
+                      <textarea name="{{ form.overall_feedback.html_name }}" rows="4"
+                        class="form-control">{{ form.overall_feedback.value }}</textarea>
+                    </div>
+                    {% else %}
                     <div class="row">
                       <div class="col">
                         <input type="hidden" name="{{ form.element_1.html_name }}" value="{{ form.element_1.value }}">
@@ -225,8 +233,10 @@
                         </div>
                       </div>
                     </div>
+                    {% endif %}
                   </div>
                   {% endfor %}
+                  {{ overall_form.as_p }} <!-- Include overall feedback form fields -->
                 </div>
                 <button type="submit" class="btn btn-primary">Download Feedback</button>
               </form>

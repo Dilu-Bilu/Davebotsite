@@ -63,9 +63,9 @@ def TextInputView(request):
     
     if request.method == 'POST':
         if request.method == 'POST' and 'form-TOTAL_FORMS' in request.POST:
-            # Construct formset_data dictionary and write form data to a text file
             formset_data = {}
             total_forms = int(request.POST.get('form-TOTAL_FORMS', 0))
+            print(total_forms)
             for i in range(total_forms):
                 formset_data[f'element_1_{i}'] = request.POST.get(f'form-{i}-element_1', '')
                 formset_data[f'element_2_{i}'] = request.POST.get(f'form-{i}-element_2', '')
@@ -76,13 +76,18 @@ def TextInputView(request):
                     'element_1': formset_data[f'element_1_{i}'],
                     'element_2': formset_data[f'element_2_{i}']
                 })
-
-            # Store formset_values in session
+            
+            # Get the index of the last form with the overall feedback 
+            last_form_index = total_forms - 1
+            overall_feedback = request.POST.get(f'form-{last_form_index}-overall_feedback', '')
+            print("Element 3:", overall_feedback)
+            # Store formset_values and overall_feedback in session
             request.session['formset_values'] = formset_values
+            request.session['overall_feedback'] = overall_feedback
 
             # Redirect to the download view
-            html_content = loader.render_to_string('download_template.html', {'formset_values': formset_values})
-            response = HttpResponse(html_content)   
+            html_content = loader.render_to_string('download_template.html', {'formset_values': formset_values, 'overall_feedback': overall_feedback})
+            response = HttpResponse(html_content)
             return response
         
         else:
@@ -99,7 +104,7 @@ def TextInputView(request):
                     try:
                         input_text = process_file(file_input)
                     except ValueError as e:
-                        context = {'form': form, 'error': str(e)}
+                        context = {'form': form, 'error': str(e)} 
                         return render(request, 'pages/home.html', context)
                 else:
                     input_text = text_input
@@ -109,11 +114,12 @@ def TextInputView(request):
                 
 
                 dave = DaveBot()
-                feedback_dict_sentences = dave.get_feedback(student_writing, rubric_criteria)
+                feedback_dict_sentences = dave.get_feedback(student_writing, rubric_criteria, subject_input)
                 # Extract data from feedback_dict_sentences to pass as initial data to the formset
                 initial_data = []
                 for key, value in feedback_dict_sentences.items():
                     initial_data.append({'element_1': value[0], 'element_2': value[1]})  # Assuming each value is a tuple with two elements
+                initial_data.append({'overall_feedback': "Please provide your overall feedback here.",})
                 formset = TupleFormSet(initial=initial_data)
                 context = {'form': form, 'input_text': input_text, 'formset': formset, 'feedback_dict_sentences': feedback_dict_sentences,}
                 
@@ -131,22 +137,27 @@ from django.template import loader
 def download_file(request):
     # Retrieve formset_values from session
     formset_values = request.session.get('formset_values', [])
-
+    overall_f = request.session.get('overall_feedback')
     # Create in-memory file-like object
     output = StringIO()
     for item in formset_values:
-        output.write(f"Element 1: {item['element_1']}\n")
-        output.write(f"Element 2: {item['element_2']}\n")
+        output.write(f"Sentence: {item['element_1']}\n")
+        output.write(f"Feedback: {item['element_2']}\n")
         output.write('\n')
 
+    
+    output.write('Overall Feedback:')
+    output.write('\n')
+    output.write(overall_f)
     # Set response to download the file
     response = HttpResponse(content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename="form_data.txt"'
     response.write(output.getvalue())
 
+    return response
     # # Alternatively, you can render an HTML response before download
     # html_content = loader.render_to_string('download_template.html', {'formset_values': formset_values})
     # response = HttpResponse(html_content)
     
 
-    return response
+    

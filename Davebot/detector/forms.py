@@ -12,13 +12,15 @@ from django.utils.translation import gettext_lazy as _
 from django.forms import formset_factory
 
 class TupleForm(forms.Form):
-    element_1 = forms.CharField(label="Element 1")
-    element_2 = forms.CharField(label="Element 2")
+    element_1 = forms.CharField(label="Element 1", required=False)
+    element_2 = forms.CharField(label="Element 2", required=False)
+    overall_feedback = forms.CharField(label="Overall Feedback", required=False)
     def clean(self):
         # Override clean method to return cleaned data without validation
         return self.cleaned_data
 
 TupleFormSet = formset_factory(TupleForm, extra=0)  # Assuming you've created the formset class already
+
 
 class TextInputForm(forms.Form):
     text_input = forms.CharField(

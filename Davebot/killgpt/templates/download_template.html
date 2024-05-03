@@ -13,11 +13,28 @@
 
                     <div class="card-body">
                         <p>Thank you for submitting the form. Click the button below to download the file.</p>
-                        <a href="{% url 'download_file' %}" class="btn btn-primary">Download File</a>
+                        <a id="downloadButton" href="{% url 'download_file' %}" class="btn btn-primary">Download File</a>
                         <a href="{% url 'home' %}" class="btn btn-secondary">Mark Another</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- JavaScript to redirect after clicking the download button -->
+    <script type="text/javascript">
+        // Wait for the DOM to fully load
+        document.addEventListener("DOMContentLoaded", function() {
+            // Find the download button
+            var downloadButton = document.getElementById("downloadButton");
+
+            // Add a click event listener to the download button
+            downloadButton.addEventListener("click", function() {
+                // After 5 seconds, redirect to the home page
+                setTimeout(function() {
+                    window.location.href = "{% url 'home' %}";  // Redirect to the home page after download
+                }, 5000);  // Redirect after 5 seconds (5000 milliseconds)
+            });
+        });
+    </script>
 {% endblock %}
