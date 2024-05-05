@@ -99,7 +99,7 @@ SECRET_KEY = env(
     default="Txk3NrvdUZSF1zGGVnjudLHJDz55fnS7RqKLTm5dmyI2lPOTHCvHZMhUvkZAcCdq",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "35.183.113.165"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "35.183.113.165", "hraju.ca", "www.hraju.ca"]
  
 # CACHES
 # ------------------------------------------------------------------------------
