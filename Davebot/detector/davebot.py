@@ -3,7 +3,7 @@ import re
 
 class DaveBot():
     def get_feedback(self, essay, document, subject):
-        turbo = dspy.OpenAI(model='gpt-3.5-turbo-0125', max_tokens=1400)
+        turbo = dspy.OpenAI(model='gpt-3.5-turbo-0125', max_tokens=1400, api_key="sk-proj-iY5tBYyoHml21QCy2bDwT3BlbkFJpZZMwtay8Hwqqyfquhxe")
         dspy.settings.configure(lm=turbo)
         essay = self.index_sentences(essay)
         class Marker(dspy.Signature):

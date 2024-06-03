@@ -200,14 +200,67 @@
                               <div class="col-auto">
                                 <strong>AI Feedback</strong>
                               </div>
-                              <div class="col-auto">
-
-                              </div>
                             </div>
                             <div class="row m-2">
-                              <textarea type="text" name="{{ form.element_2.html_name }}" value="" rows="4"
-                                class="form-control">{{ form.element_2.value }}</textarea>
+                              <textarea type="text" name="{{ form.element_2.html_name }}" value="" rows="4" class="form-control">{{ form.element_2.value }}</textarea>
                             </div>
+                            <div class="col">
+                              <button id="accept-btn-{{ forloop.counter }}" class="btn text-white" style="background-color: #812B80;" onclick="acceptFeedback({{ forloop.counter }})">Accept</button>
+                              <button id="cancel-btn-{{ forloop.counter }}" class="btn btn-outline-dark" onclick="cancelFeedback({{ forloop.counter }})">Cancel</button>
+                            </div>
+                            <script>
+                              function acceptFeedback(counter) {
+                                // Prevent default form submission
+                                event.preventDefault();
+                            
+                                // Select the feedback div and sentence
+                                const feedbackDiv = document.getElementById('feedback_' + counter);
+                                const sentence = feedbackDiv.closest('.feedback-container').querySelector('p');
+                            
+                                // Hide the feedback div
+                                feedbackDiv.style.display = 'none';
+                            
+                                
+                            
+                                // Remove the underlined property from the sentence
+                                if (sentence) {
+                                  sentence.classList.remove('text-purple');
+                                  sentence.classList.add('text-green');
+                                }
+                              }
+                            
+                              function cancelFeedback(counter) {
+                                // Prevent default form submission
+                                event.preventDefault();
+                            
+                                // Select the feedback div and sentence
+                                const feedbackDiv = document.getElementById('feedback_' + counter);
+                                const sentence = feedbackDiv.closest('.feedback-container').querySelector('p');
+                            
+                                // Hide the feedback div
+                                feedbackDiv.style.display = 'none';
+                            
+                                // Clear the feedback text area
+                                const textArea = feedbackDiv.querySelector('textarea');
+                                if (textArea) {
+                                  textArea.value = '';
+                                }
+                            
+                                // Remove the underlined property from the sentence
+                                if (sentence) {
+                                  sentence.classList.remove('text-purple');
+                                  sentence.classList.remove('text-green');
+                                }
+                              }
+                            
+                              // Attach event listeners to prevent default form submission for all buttons
+                              document.querySelectorAll('button').forEach(button => {
+                                button.addEventListener('click', event => event.preventDefault());
+                              });
+                            </script>
+                            
+                            
+
                             {% else %}
                             <!-- Human Feedback -->
                             <div class="row">
@@ -251,11 +304,24 @@
                   cursor: pointer;
                   /* Change cursor to pointer on hover */
                 }
+
+                .text-green {
+                  text-decoration: underline;
+                  text-decoration-thickness: 3px;
+                  text-underline-offset: 0.3em;
+                  text-decoration-color: rgb(30, 180, 0);
+                  cursor: pointer;
+                  /* Change cursor to pointer on hover */
+                }
               </style>
 
               <script>
                 function toggleFeedback(counter) {
                   $('#feedback_' + counter).toggle();
+                }
+
+                function clearForm() {
+                  $('textarea').val(''); // Clear textareas
                 }
               </script>
 
