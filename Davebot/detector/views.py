@@ -134,25 +134,34 @@ from django.shortcuts import redirect
 import os
 from django.template import loader
 
+from docx import Document
+
 def download_file(request):
     # Retrieve formset_values from session
     formset_values = request.session.get('formset_values', [])
     overall_f = request.session.get('overall_feedback')
-    # Create in-memory file-like object
-    output = StringIO()
-    for item in formset_values:
-        output.write(f"Sentence: {item['element_1']}\n")
-        output.write(f"Feedback: {item['element_2']}\n")
-        output.write('\n')
 
-    
-    output.write('Overall Feedback:')
-    output.write('\n')
-    output.write(overall_f)
-    # Set response to download the file
-    response = HttpResponse(content_type='text/plain')
-    response['Content-Disposition'] = 'attachment; filename="form_data.txt"'
-    response.write(output.getvalue())
+    # Create a new Word document
+    document = docx.Document()
+
+    # Add sentences and feedback as paragraphs with comments
+    for item in formset_values:
+        paragraph = document.add_paragraph(item['element_1'])
+        paragraph.add_comment(item['element_2'], author='Instructor')
+
+    # Add overall feedback as a separate paragraph
+    if overall_f:
+        document.add_paragraph('Overall Feedback:')
+        document.add_paragraph(overall_f)
+
+    # Create an in-memory stream to store the Word document
+    stream = io.BytesIO()
+    document.save(stream)
+    stream.seek(0)
+
+    # Set response to download the Word file
+    response = HttpResponse(stream, content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment; filename="commented_file.docx"'
 
     return response
     # # Alternatively, you can render an HTML response before download
